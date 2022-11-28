@@ -1,0 +1,52 @@
+@startuml
+
+'Components
+'----------
+
+[Protocol] as PR
+[Interaction] as INT
+[Core] as C
+[Ecosystem Integration] as EI
+[Connector Commons] as CC
+
+'Interfaces
+'----------
+
+interface ComponentInteractorProvider as CIP
+interface ComponentInteractor as CI
+interface ArtifactFileProvider as AFP
+interface InfrastructureComponentStatusHandler as ICSH
+interface QueryResultsProvider as QRP
+interface Component as CompInt
+interface ComponentLifeCycleHandler as CLH
+interface MessageAndPayload as MAP
+interface MessageHandler as MH
+interface SelfDescriptionProvider as SDP
+interface SecurityTokenProvider as STP
+interface SecurityTokenVerifier as STV
+
+'Component dependencies
+'----------------------
+
+PR -down-> INT
+INT -down-> CC
+CC -right-> C
+EI -left-> C
+
+'Component interfaces
+'--------------------
+
+PR .right.> CIP
+INT .right.> CI
+CC ..> AFP
+CC ..> ICSH
+CC ..> QRP
+C ..> CompInt
+C ..> CLH
+C ..> MAP
+C ..> MH
+C ..> SDP
+C ..> STP
+C ..> STV
+
+@enduml

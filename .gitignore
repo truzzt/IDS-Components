@@ -1,0 +1,8 @@
+.idea
+**/*.iml
+**/target
+*.versionsBackup
+**/.classpath**
+**/.project**
+**/org.eclipse**
+**/.flattened-pom.xml

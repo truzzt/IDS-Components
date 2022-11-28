@@ -1,0 +1,28 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ids:   <https://w3id.org/idsa/core/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+
+ids:ExternalClass  rdf:type  owl:Class ;
+        rdfs:label       "ExternalClass"@en ;
+        rdfs:label       "A class not defined in the IDS ontology"@en .
+
+ids:ExternalSubclass  rdf:type  owl:Class ;
+        rdfs:subClassOf  ids:ExternalClass ;
+        rdfs:label       "ExternalSubclass"@en ;
+        rdfs:comment     "A class not defined in the IDS ontology and a subclass of ids:ExternalClass ."@en .
+
+ids:externalProperty
+        rdf:type      owl:DatatypeProperty ;
+        rdfs:label    "externalProperty"@en ;
+        rdfs:domain   ids:ExternalClass ;
+        rdfs:range    xsd:string ;
+        rdfs:comment  "A property that needs to have one string value." .
+
+ids:externalPropertyFromSubclass
+        rdf:type      owl:DatatypeProperty ;
+        rdfs:label    "externalPropertyFromSubclass"@en ;
+        rdfs:domain   ids:ExternalSubclass ;
+        rdfs:range    xsd:string ;
+        rdfs:comment  "Another property that needs to have one string value." .

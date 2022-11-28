@@ -1,0 +1,49 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ids: <https://w3id.org/idsa/core/> .
+
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix shapes: <https://github.com/International-Data-Spaces-Association/InformationModel/tree/master/testing/> .
+
+shapes:
+	a owl:Ontology ;
+	sh:declare [
+		sh:prefix "rdf" ;
+		sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#"^^xsd:anyURI ;
+	] ;
+
+	sh:declare [
+		sh:prefix "ids" ;
+		sh:namespace "https://w3id.org/idsa/core/"^^xsd:anyURI ;
+	] .
+
+shapes:ExternalClassShape
+	a sh:NodeShape ;
+	sh:targetClass ids:ExternalClass ;
+
+	sh:property [
+		a sh:PropertyShape ;
+		sh:path ids:externalProperty ;
+		sh:datatype xsd:string ;
+		sh:minCount 1 ;
+		sh:severity sh:Violation ;
+		sh:message "(ExternalClassShape): This can only be triggered for the ExternalSubclass because the subclass relation to ids:ExternalClass is known to the ShaclValidator by adding the associated ontology. See https://www.w3.org/TR/shacl/#data-graph for details."@en ;
+	] ;
+.
+
+shapes:ExternalSubclassShape
+	a sh:NodeShape ;
+	sh:targetClass ids:ExternalSubclass ;
+
+	sh:property [
+		a sh:PropertyShape ;
+		sh:path ids:externalPropertyFromSubclass ;
+		sh:datatype xsd:string ;
+		sh:minCount 1 ;
+		sh:severity sh:Violation ;
+		sh:message "(ExternalSubclassShape): This can be triggered because the direct sh:targetClass relation works without the ontology knowledge."@en ;
+	] ;
+.
