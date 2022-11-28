@@ -42,3 +42,4 @@ an RDF-based ontology.
 * Christian Mader (Fraunhofer IAIS)
 * Matthias Böckmann (Fraunhofer IAIS)
 * Dileep Ramachandrarao Krishna Murthy (Fraunhofer IAIS)
+* Tim Wirtz (Fraunhofer IAIS)
