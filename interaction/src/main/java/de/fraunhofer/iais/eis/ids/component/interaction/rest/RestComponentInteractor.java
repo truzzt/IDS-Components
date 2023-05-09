@@ -10,6 +10,7 @@ import de.fraunhofer.iais.eis.ids.component.interaction.ComponentInteractor;
 import de.fraunhofer.iais.eis.ids.component.interaction.multipart.MapFactory;
 import de.fraunhofer.iais.eis.ids.component.interaction.validation.ShaclValidator;
 import de.fraunhofer.iais.eis.ids.jsonld.Serializer;
+import de.fraunhofer.iais.eis.ids.jsonld.SerializerFactory;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.jena.shacl.ValidationReport;
 
@@ -25,7 +26,7 @@ public class RestComponentInteractor implements ComponentInteractor<ImmutablePai
     private final boolean performShaclValidation;
     private final String restEndpointPath;
 
-
+    private final Serializer serializer = SerializerFactory.getInstance();
 
     public String getRestEndpointPath() { return restEndpointPath ; }
 
@@ -58,7 +59,7 @@ public class RestComponentInteractor implements ComponentInteractor<ImmutablePai
         //Check if the conversion to a message and payload succeeds
         //For example, this might fail, if the MessageType is not known to the MapFactory, or if the message format is broken
         try {
-            Message msg = new Serializer().deserialize(header, Message.class);
+            Message msg = serializer.deserialize(header, Message.class);
             map = MapFactory.getInstance().createMap(msg, new SerializedPayload(body.getBytes()));
             if(performShaclValidation) {
                 //TODO: Body validation might be relevant for PUT/POST messages. If changes are made, also apply them to DefaultMultipartMapConverter

@@ -15,6 +15,7 @@ import de.fraunhofer.iais.eis.ids.connector.commons.participant.map.ParticipantN
 import de.fraunhofer.iais.eis.ids.connector.commons.participant.map.ParticipantRequestMAP;
 import de.fraunhofer.iais.eis.ids.connector.commons.resource.map.ResourceMAP;
 import de.fraunhofer.iais.eis.ids.jsonld.Serializer;
+import de.fraunhofer.iais.eis.ids.jsonld.SerializerFactory;
 import org.apache.commons.io.FileUtils;
 import org.apache.jena.riot.RiotException;
 
@@ -25,6 +26,8 @@ import java.nio.file.Files;
 public class MapFactory {
 
     private static MapFactory instance;
+
+    private final Serializer serializer = SerializerFactory.getInstance();
 
     private MapFactory() {
     }
@@ -116,7 +119,7 @@ public class MapFactory {
     private InfrastructureComponent payloadAsInfrastructureComponent(SerializedPayload payload) throws IOException, RejectMessageException {
         try {
             String infrastructureComponentSerialization = new String(payload.getSerialization());
-            return new Serializer().deserialize(
+            return serializer.deserialize(
                     infrastructureComponentSerialization,
                     InfrastructureComponent.class);
         } catch (NullPointerException e) {
@@ -130,7 +133,7 @@ public class MapFactory {
     private Participant payloadAsParticipant(SerializedPayload payload) throws IOException, RejectMessageException {
         try {
             String participantSerialization = new String(payload.getSerialization());
-            return new Serializer().deserialize(
+            return serializer.deserialize(
                     participantSerialization,
                     Participant.class);
         } catch (NullPointerException e) {
@@ -144,7 +147,7 @@ public class MapFactory {
     private Resource payloadAsResource(SerializedPayload payload) throws IOException, RejectMessageException {
         try {
             String resourceSerialization = new String(payload.getSerialization());
-            return new Serializer().deserialize(resourceSerialization, Resource.class);
+            return serializer.deserialize(resourceSerialization, Resource.class);
         } catch (NullPointerException e) {
             throw new RejectMessageException(RejectionReason.MALFORMED_MESSAGE, new NullPointerException("No payload present (required)"));
         }
@@ -156,7 +159,7 @@ public class MapFactory {
     private Contract payloadAsContract(SerializedPayload payload) throws IOException, RejectMessageException {
         try {
             String serialization = new String(payload.getSerialization());
-            return new Serializer().deserialize(serialization, Contract.class);
+            return serializer.deserialize(serialization, Contract.class);
         } catch (NullPointerException e) {
             throw new RejectMessageException(RejectionReason.MALFORMED_MESSAGE, new NullPointerException("No payload present (required)"));
         }

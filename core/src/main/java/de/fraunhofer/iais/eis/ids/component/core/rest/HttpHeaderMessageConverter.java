@@ -2,6 +2,7 @@ package de.fraunhofer.iais.eis.ids.component.core.rest;
 
 import de.fraunhofer.iais.eis.*;
 import de.fraunhofer.iais.eis.ids.jsonld.Serializer;
+import de.fraunhofer.iais.eis.ids.jsonld.SerializerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +45,8 @@ public class HttpHeaderMessageConverter {
     public URI correlationMessage;
 
     public RejectionReason rejectionReason;
+
+    private final Serializer serializer = SerializerFactory.getInstance();
 
     HttpHeaderMessageConverter()
     {
@@ -193,7 +196,7 @@ public class HttpHeaderMessageConverter {
             {
 
                 ConnectorUpdateMessage m = new ConnectorUpdateMessageBuilder()
-                        ._affectedConnector_(new Serializer().deserialize(body, Connector.class).getId())
+                        ._affectedConnector_(serializer.deserialize(body, Connector.class).getId())
                         ._issued_(issued)
                         ._issuerConnector_(issuerConnector)
                         ._senderAgent_(senderAgent)
@@ -210,7 +213,7 @@ public class HttpHeaderMessageConverter {
             else
             {
                 ResourceUpdateMessage m = new ResourceUpdateMessageBuilder()
-                        ._affectedResource_(new Serializer().deserialize(body, Resource.class).getId())
+                        ._affectedResource_(serializer.deserialize(body, Resource.class).getId())
                         ._issued_(issued)
                         ._issuerConnector_(issuerConnector)
                         ._senderAgent_(senderAgent)

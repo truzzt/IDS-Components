@@ -11,6 +11,7 @@ import de.fraunhofer.iais.eis.ids.component.interaction.multipart.Multipart;
 import de.fraunhofer.iais.eis.ids.component.interaction.multipart.MultipartComponentInteractor;
 import de.fraunhofer.iais.eis.ids.component.interaction.rest.RestComponentInteractor;
 import de.fraunhofer.iais.eis.ids.jsonld.Serializer;
+import de.fraunhofer.iais.eis.ids.jsonld.SerializerFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
@@ -47,13 +48,15 @@ public class ComponentController {
     private boolean isParIS;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    private final Serializer serializer = SerializerFactory.getInstance();
+
     @PostConstruct
     private void setUp() {
         multipartComponentInteractor = (MultipartComponentInteractor) componentInteractorProvider.getComponentInteractor();
         restComponentInteractor = new RestComponentInteractor(multipartComponentInteractor.getComponent(), multipartComponentInteractor.getSecurityTokenProvider(), multipartComponentInteractor.getResponseSenderAgent(), multipartComponentInteractor.getPerformShaclValidation());
 
         try {
-            Connector c = new Serializer().deserialize(restComponentInteractor.getSelfDescription(), Connector.class);
+            Connector c = serializer.deserialize(restComponentInteractor.getSelfDescription(), Connector.class);
             isParIS = c instanceof ParIS;
         }
         catch (IOException e)

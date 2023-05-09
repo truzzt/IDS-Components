@@ -37,6 +37,8 @@ class MessageDispatcher {
     private final InfrastructureComponent infrastructureComponent;
     private URI failureResponseSenderAgent;
 
+    private final ObjectMapper mapper = new ObjectMapper();
+
     MessageDispatcher(InfrastructureComponent infrastructureComponent) {
         this.infrastructureComponent = infrastructureComponent;
         Arrays.stream(RequestType.values()).forEach(rt -> allMessageHandlers.put(rt, new ArrayList<>()));
@@ -75,7 +77,7 @@ class MessageDispatcher {
                 Optional<?> incomingPayload = messageAndPayload.getPayload();
                 if(incomingPayload.isPresent()) {
                     if (incomingPayload.get() instanceof InfrastructureComponent) {
-                        JsonNode convertPayloadToJson = new ObjectMapper().readTree(((InfrastructureComponent)incomingPayload.get()).toRdf());
+                        JsonNode convertPayloadToJson = mapper.readTree(((InfrastructureComponent)incomingPayload.get()).toRdf());
                         if (convertPayloadToJson.has("ids:securityProfile"))
                             additionalAttrs.put("securityProfile", convertPayloadToJson.get("ids:securityProfile").get("@id").textValue());
                         else

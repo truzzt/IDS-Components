@@ -7,6 +7,7 @@ import de.fraunhofer.iais.eis.ids.component.core.MessageAndPayload;
 import de.fraunhofer.iais.eis.ids.component.core.SerializedPayload;
 import de.fraunhofer.iais.eis.ids.component.interaction.multipart.Multipart;
 import de.fraunhofer.iais.eis.ids.jsonld.Serializer;
+import de.fraunhofer.iais.eis.ids.jsonld.SerializerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -23,6 +24,8 @@ import static de.fraunhofer.iais.eis.RejectionReason.*;
 
 class ResponseEntityCreator {
     Logger logger = LoggerFactory.getLogger(ResponseEntityCreator.class);
+
+    private final Serializer serializer = SerializerFactory.getInstance();
 
     ResponseEntity fromResponseForRest(MessageAndPayload<?, ?> response, String method)
     {
@@ -114,7 +117,7 @@ class ResponseEntityCreator {
                                 .body(response.getPayload().get());
                     } else {
                         try {
-                            return bodyBuilder.body(new Serializer().serialize(response.getPayload().get()));
+                            return bodyBuilder.body(serializer.serialize(response.getPayload().get()));
                         } catch (IOException e) {
                             //Some internal error occurred - could not serialize own response
                             return ResponseEntity.status(500).build();

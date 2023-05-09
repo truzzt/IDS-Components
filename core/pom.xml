@@ -26,6 +26,11 @@
             <artifactId>validation-serialization-provider</artifactId>
             <version>${serializer.version}</version>
         </dependency>
+        <dependency>
+            <groupId>de.fraunhofer.iais.eis.ids</groupId>
+            <artifactId>infomodel-serializer</artifactId>
+            <version>${serializer.version}</version>
+        </dependency>
 
         <!-- Logging -->
         <dependency>
